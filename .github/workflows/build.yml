@@ -21,6 +21,9 @@ jobs:
 
     runs-on: ${{ matrix.platform.os }}
 
+    permissions:
+      contents: write
+
     steps:
       # 1. check out the code
       - name: Checkout
@@ -32,7 +35,7 @@ jobs:
         with:
           node-version: 22
           cache: "npm"
-          cache-dependency-path: my-tui-app/package-lock.json # ← nested path
+          cache-dependency-path: my-tui-app/package-lock.json
 
       # 3. install Rust
       - name: Setup Rust
@@ -42,7 +45,7 @@ jobs:
       - name: Cache Rust dependencies
         uses: Swatinem/rust-cache@v2
         with:
-          workspaces: "my-tui-app/src-tauri -> target" # ← nested path
+          workspaces: "my-tui-app/src-tauri -> target"
 
       # 5. Linux only — install system dependencies
       - name: Install Linux dependencies
@@ -57,23 +60,25 @@ jobs:
 
       # 6. install npm dependencies
       - name: Install dependencies
-        working-directory: my-tui-app # ← nested path
+        working-directory: my-tui-app
         run: npm install
 
       # 7. build the Tauri app
+      # on push → just builds, no release created
+      # on release → builds and attaches to GitHub release
       - name: Build
         uses: tauri-apps/tauri-action@v0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          projectPath: my-tui-app # ← nested path
-          tagName: v__VERSION__
-          releaseName: "Pokedex v__VERSION__"
+          projectPath: my-tui-app
+          tagName: ${{ github.event_name == 'release' && 'v__VERSION__' || '' }}
+          releaseName: ${{ github.event_name == 'release' && 'Pokedex v__VERSION__' || '' }}
           releaseBody: "See the release assets to download this version."
-          releaseDraft: true
+          releaseDraft: ${{ github.event_name == 'release' }}
           prerelease: false
 
-      # 8. upload build artifacts
+      # 8. upload build artifacts to Actions tab (always)
       - name: Upload artifacts
         uses: actions/upload-artifact@v4
         with:

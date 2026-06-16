@@ -15,7 +15,7 @@ export class Cache {
   // keys -> strings (our URLs)
   // values -> CacheEntry objects holding the cached data
 
-  #reapIntervalId: NodeJS.Timeout | undefined = undefined;
+  #reapIntervalId: ReturnType<typeof setInterval> | undefined = undefined;
   // stores the ID returned by setInterval so we can cancel it later with clearInterval
   // starts as undefined because the loop hasn't started yet
   // NodeJS.Timeout us the type TypeScript uses for the setInterval return object(in backend) a value on the browser

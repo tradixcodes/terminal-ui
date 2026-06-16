@@ -5,7 +5,7 @@ const green = "\x1b[32m";
 const red = "\x1b[31m";
 const reset = "\x1b[0m";
 
-export async function commandPokedex(state: State, ...args: string[]): Promise<void>{
+export async function commandPokedex(state: State, ..._args: string[]): Promise<void>{
   const caught = Object.keys(state.pokedex);
 
   if (caught.length === 0) {

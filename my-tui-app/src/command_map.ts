@@ -3,7 +3,7 @@ import { type State } from "./state.js";
 const cyan   = "\x1b[36m";
 const reset = "\x1b[0m";
 
-export async function commandMap(state: State, ...args: string[]): Promise<void> {
+export async function commandMap(state: State, ..._args: string[]): Promise<void> {
   // fetches 20 locations - uses state.nextURL if it exists, otherwise fetches page 1
   const data = await state.pokeapi.fetchLocations(state.nextURL);
 

@@ -1,8 +1,8 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "my-tui-app",
-  "version": "0.1.0",
-  "identifier": "com.tradix.my-tui-app",
+  "productName": "Pokedex",
+  "version": "0.2.0",
+  "identifier": "com.tradix.pokedex",
   "build": {
     "beforeDevCommand": "npm run dev",
     "devUrl": "http://localhost:1420",
@@ -23,6 +23,9 @@
     "security": {
       "csp": null
     }
+  },
+  "plugins" : {
+    "process": {}
   },
   "bundle": {
     "active": true,

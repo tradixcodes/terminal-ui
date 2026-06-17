@@ -1,4 +1,5 @@
 import { type State } from "./state.js";
+import { savePokedex } from "./pokedex_store.js";
 
 const yellow = "\x1b[33m";
 const green  = "\x1b[32m";
@@ -44,6 +45,7 @@ export async function commandCatch(state: State, ...args: string[]): Promise<voi
     if (Math.random() < catchChance) {
       console.log(`${green}${pokemon.name} was caught!${reset}`);
       state.pokedex[pokemon.name] = pokemon;
+      await savePokedex(state.pokedex); // save immediately after catching
     } else {
       console.log(`${red}${pokemon.name} escaped!${reset}`);
     }
